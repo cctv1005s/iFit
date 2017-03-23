@@ -6,7 +6,7 @@ export default class Drawer extends Component{
         var navigation = this.props.navigation;
         return (
             <View>
-                <Image source={require('../assets/img/background.png')} style={{width:310,height:400}}/>
+                <Image source={require('../assets/img/background.png')} style={{width:300,height:250}}/>
                 <Button title="text me" onPress={
                     ()=>{
                         navigation.navigate('Collect');

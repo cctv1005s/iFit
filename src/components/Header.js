@@ -24,7 +24,7 @@ var styles = StyleSheet.create({
         width:25,
     },
     header:{
-        backgroundColor:'#FF6666',
+        backgroundColor:'#FFCC33',
         flexDirection:'row',
         alignItems:'center',
         padding:10,

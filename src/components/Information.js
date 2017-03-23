@@ -1,56 +1,47 @@
-import React,{Component} from 'react';
-import {View,Text} from 'react-native';
+import React from 'react';
 import { TabNavigator } from 'react-navigation';
-import Header from './Header';
 
-/**
- * 资讯部分
- */
+import Overall from './Information/Overall.js';
+import SinaWeibo from './Information/SinaWeibo.js';
+import Keep from './Information/Keep.js';
+import FitTime from './Information/FitTime.js';
 
-class SinaWeibo extends Component{
-    render(){
-        return (
-            <View>
-                <Header
-                    title="新浪微博"
-                />
-                <Text>
-                    新浪微博
-                </Text>
-            </View>
-        );
-    }
-}
-
-class Keep extends Component{
-    render(){
-        return (
-            <View>
-                <Text>
-                    Keep
-                </Text>
-            </View>
-        );
-    }
-}
-
-
-export default TabNavigator({
+var Router = {
+    Overall:{
+        screen:Overall,
+        path:'/',
+    },
     SinaWeibo:{
         screen:SinaWeibo,
-        path:'/',
-        navigationOptions:{
-            title:()=>'新浪微博'
-        }
+        path:'/SinaWeibo,'
     },
     Keep:{
         screen:Keep,
-        path:'/keep,',
-        navigationOptions:{
-            title:() => 'Keep'
-        }
+        path:'/Keep'
+    },
+    FitTime:{
+        screen:FitTime,
+        path:'/FitTime'
     }
-},{
+};
+
+export default TabNavigator(Router,{
     tabBarPosition: 'bottom',
     swipeEnabled: false,
+    tabBarOptions: {
+    activeTintColor: '#FFCC33',
+    labelStyle: {
+        fontSize: 12,
+        color:'#515151'
+    },
+    indicatorStyle:{
+        opacity:0
+    },
+    showIcon:true,
+    style:{
+        height:60,
+        backgroundColor: '#f8f8f8'
+    },
+    upperCaseLabel:false
+  }
 });

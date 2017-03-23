@@ -3,10 +3,12 @@ import { DrawerNavigator } from 'react-navigation';
 import {View ,Text,Image,Button} from 'react-native';
 
 
+
 //组件
 import Information from './components/Information.js';
 import Collect from './components/Collect.js';
 import Drawer from './components/Drawer.js';
+import Note from './components/Note.js';
 
 const Router = {
     Information:{
@@ -16,6 +18,10 @@ const Router = {
     Collect:{
         name:'Collect',
         screen:Collect
+    },
+    Note:{
+        name:'Note',
+        screen:Note
     }
 };
 
@@ -23,7 +29,8 @@ const AppNavigator = DrawerNavigator(Router,{
     initialRouteName: 'Information',
     headerMode:'none',
     mode:'card',
-    contentComponent:Drawer
+    contentComponent:Drawer,
+    drawerWidth:300
 });
 
 export default () => <AppNavigator />;
