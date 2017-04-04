@@ -1,10 +1,9 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var fs = require('fs');
-var superagent = require('superagent');
 
 
-var headers1 = {
+var headers = {
 		'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 		'Accept-Encoding':'gzip, deflate, sdch',
 		'Accept-Language':'en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,zh-TW;q=0.2',
@@ -17,26 +16,30 @@ var headers1 = {
 		'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
 };
 
-function callback1(err,res){
+function callback(err,res,body){
 	if(!err && res.statusCode == 200){
-		var text =  res.text;
+		var text =  body;
 		var arr = text.match(/<div class=\\"WB_feed_detail.*?<div class=\\"WB_feed_handle/g);
-		console.log(arr.length);
+
+		var json = JSON.parse(fs.readFileSync('data.json').toString());
+		var contents = [];
 		for(var i = 0;i < arr.length;++i){
 			var x = arr[i].slice(0,arr[i].length-28);
-			fs.appendFile('lucky.txt',x,'utf-8',function(err){
-				if(err){
-					console.log(err);
-				}
-			});
+			contents.push({"content":x});
 		}
-
+		json['Weibo'] = contents;
+		fs.writeFileSync('data.json',JSON.stringify(json));
+		//unicode转为中文
+		//decodeURIComponent(text);  没有现成的模块使用该函数
+		text = fs.readFileSync('data.json').toString();
+		text = text.replace(/&#x/g,'%u');
+		text = text.replace(/;/g,'');
+		text = unescape(text);
+		fs.writeFileSync('data.json',text);
+		console.log("ok");
 	}
 }
 
-url1 = 'http://weibo.com/siriusgoalkeeper?is_hot=1';
+url = 'http://weibo.com/siriusgoalkeeper?is_hot=1';
 
-superagent.get(url1)
-			.set(headers1)
-			.send()
-			.end(callback1);
+request({url:url,gzip:true,headers:headers},callback);

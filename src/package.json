@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "eventproxy": "^0.3.5",
+    "request-promise": "^4.2.0"
+  }
+}
