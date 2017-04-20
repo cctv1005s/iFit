@@ -7,11 +7,14 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-const Header = ({title,img}) =>(
+const Header = ({title,img,leftClick}) =>(
     <View style={styles.header}>
-        <TouchableOpacity>
-        <Image source={require('../assets/img/menu.png')} style={styles.left}/>
+        <TouchableOpacity 
+         onPress={leftClick}
+        >
+            <Image source={require('../assets/img/menu.png')} style={styles.left}/>
         </TouchableOpacity>
+        
         <Text style = {styles.title}>
             {title}
         </Text>

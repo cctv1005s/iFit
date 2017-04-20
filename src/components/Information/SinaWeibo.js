@@ -16,7 +16,11 @@ export default class SinaWeibo extends Component{
         />
       ),
     },
+};
+
+    ComponentDidMount(){
     };
+
     render(){
         return (
             <View>
