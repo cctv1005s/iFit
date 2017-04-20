@@ -1,3 +1,6 @@
+//数据持久化
+import storage from './Storage.js';
+
 import React, { Component } from 'react';
 import { DrawerNavigator } from 'react-navigation';
 import {View ,Text,Image,Button} from 'react-native';
