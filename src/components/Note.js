@@ -1,6 +1,9 @@
 import React,{Component} from 'react';
-import {View,Text} from 'react-native';
+import {View,Text,ScrollView} from 'react-native';
 import Header from './Header.js';
+
+//每一个Note条目
+import NoteD from './Note/NoteD.js';
 
 export default class Note extends Component{
     constructor(p){
@@ -10,13 +13,12 @@ export default class Note extends Component{
     
     render(){
         return (
-            <View>
-                <Header 
-                 title="健身笔记"
-                />
-                <Text>
-                    健身笔记
-                </Text>
+            <View style={{zIndex:1}}>
+                <Header title="健身笔记"/>
+                <ScrollView style={{height:800,backgroundColor:"#eee"}}>
+                    <NoteD />
+                    <NoteD />
+                </ScrollView>
             </View>
         );
     }
