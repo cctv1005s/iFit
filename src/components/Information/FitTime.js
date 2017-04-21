@@ -3,8 +3,9 @@ import {View,Text,Image,Button,ScrollView} from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import Header from '../Header.js';
 import cheerio from 'cheerio-without-node-native';
+import Navigation from '../../Navigation.js';
 
-var storage = window.storage;
+var storage = global.storage;
 
 /**
  * 概览
@@ -59,7 +60,6 @@ export default class FitTime extends Component{
             }
             //讲数据添加进入缓存
             self.saveData();
-            self.setState({});
         })
         .catch(function(e){
             alert(e);
@@ -91,28 +91,15 @@ export default class FitTime extends Component{
     render(){
         return (
             <View>
-                <Header 
-                    title = "FitTime"
-                    leftClick={()=>{
-                        global.navigation.navigation.navigate('DrawerOpen')
-                    }}
-                />
+                <Header title = "FitTime"/>
                 <View>
-                <ScrollView style={{height:600}}>
-                    {this.state.list.map(function(ele,i){
-                        return (
-                            <View key={i}>
-                            <Image 
-                             source={{uri: ele.url}}
-                             style={{width: 100, height: 100}} 
-                            />
-                            <Text>
-                                我是图片
-                            </Text>
-                            </View>
-                        );
-                    })}
-                </ScrollView>
+                <Button title="textme" onPress={
+                    function(){
+                        Navigation.openWeb({
+                            title:"bing",
+                            url:"http://cn.bing.com"
+                        });
+                    }}/>
                 </View>
             </View>
         );

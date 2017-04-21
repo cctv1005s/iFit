@@ -10,11 +10,13 @@ import Information from './components/Information.js';
 import Drawer from './components/Drawer.js';
 import Note from './components/Note.js';
 import Collect from './components/Collect.js';
+import WebView from './components/WebView.js';
 
 const Router = {
     Information:{
         name:'Information',
         screen:function(navigation){
+            //在这里，将navigation保存
             global.navigation = navigation;
             return <Information/>
         }
@@ -28,14 +30,23 @@ const Router = {
         name:'Note',
         screen:Note
     }
+    ,
+    WebView:{
+        name:'WebView',
+        screen:WebView
+    }
+
 };
 
 const AppNavigator = DrawerNavigator(Router,{
-    initialRouteName: 'Note',
+    initialRouteName: 'Information',
     headerMode:'none',
     mode:'card',
     contentComponent:Drawer,
     drawerWidth:300
 });
+
+
+require('./Navigation.js');
 
 export default () => <AppNavigator />;

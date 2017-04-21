@@ -11,11 +11,11 @@ const Header = ({title,img,leftClick}) =>(
     <View style={styles.header}>
         <TouchableOpacity 
          onPress={()=>{
-             //打开抽屉
-             global.navigation.navigation.navigate('DrawerOpen')
+             //返回上一层
+             global.navigation.navigation.goBack(null);
          }}
         >
-            <Image source={require('../assets/img/menu.png')} style={styles.left}/>
+            <Image source={require('../../assets/img/back.png')} style={styles.left}/>
         </TouchableOpacity>
         
         <Text style = {styles.title}>
@@ -26,7 +26,7 @@ const Header = ({title,img,leftClick}) =>(
 
 var styles = StyleSheet.create({
     left:{
-        height:15,
+        height:25,
         width:25,
     },
     header:{
