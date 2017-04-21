@@ -11,7 +11,7 @@ export default class webView extends Component{
         url = url||"";
         console.log(Navigation.get());
         return (
-            <View style={{height:height}}>
+            <View style={{height:height,zIndex:1}}>
                 <Header 
                  title={title}
                 />

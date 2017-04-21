@@ -11,7 +11,7 @@ const Header = ({title,img,rightClick}) =>(
     <View style={styles.header}>
         <TouchableOpacity 
          onPress={()=>{
-             global.navigation.navigate('DrawerOpen')
+             global.navigation.navigation.navigate('DrawerOpen')
          }}
         >
             <Image source={require('../../assets/img/menu.png')} style={styles.left}/>
@@ -36,7 +36,7 @@ var styles = StyleSheet.create({
     }
     ,
     header:{
-        backgroundColor:'#FFCC33',
+        backgroundColor:'rgb(225,102,102)',
         flexDirection:'row',
         alignItems:'center',
         padding:10,
