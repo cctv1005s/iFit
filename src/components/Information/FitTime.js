@@ -3,6 +3,9 @@ import {View,Text,Image,Button,ScrollView} from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import Header from '../Header.js';
 import cheerio from 'cheerio-without-node-native';
+import Navigation from '../../Navigation.js';
+
+var storage = global.storage;
 
 /**
  * 概览
@@ -17,6 +20,31 @@ export default class FitTime extends Component{
 
     componentDidMount(){
         var self = this;
+        /**
+         * 读取数据
+         */
+        storage.load({
+            key:'fittime',
+            autoSync: true,
+
+        })
+        .then(function(ret){
+            //检测缓存，没有缓存则抛出错误，重新加载缓存
+            if(typeof ret !== 'array' || ret.length == 0)
+                throw new Error("没有数据");
+
+            self.setState({
+                list:ret
+            });
+
+        })
+        .catch(function(err){
+            self.fetchData();
+        });
+    }
+
+    fetchData(){
+        var self = this;
         fetch('http://cn.bing.com/images/search?q=image&FORM=HDRSC2')
         .then(function(res){
             return res.text();
@@ -24,16 +52,27 @@ export default class FitTime extends Component{
         .then(function(text){
             var $ = cheerio.load(text);
             var thumbs = $('.thumb');
-            for(var i = 0;i < thumbs.length;i++){
+            for(var i = 0;i < 10;i++){
                 self.state.list.push({
                     url:thumbs[i].attribs.href,
                     name:'thumbs'
                 });
             }
-            self.setState({});
+            //讲数据添加进入缓存
+            self.saveData();
         })
         .catch(function(e){
+            alert(e);
             throw new Error(e);
+        });
+    }
+
+    //加入缓存
+    saveData(){
+        storage.save({
+            key:"fittime",
+            rawData:this.state.list,
+             expires: 1000 * 60 *5 //缓存过期时间
         });
     }
 
@@ -50,31 +89,17 @@ export default class FitTime extends Component{
     };
 
     render(){
-        console.log(this.state);
         return (
             <View>
-                <Header 
-                    title = "FitTime"
-                    leftClick={()=>{
-                        global.navigation.navigation.navigate('DrawerOpen')
-                    }}
-                />
+                <Header title = "FitTime"/>
                 <View>
-                <ScrollView style={{height:600}}>
-                    {this.state.list.map(function(ele,i){
-                        return (
-                            <View key={i}>
-                            <Image 
-                             source={{uri: ele.url}}
-                             style={{width: 100, height: 100}} 
-                            />
-                            <Text>
-                                我是图片
-                            </Text>
-                            </View>
-                        );
-                    })}
-                </ScrollView>
+                <Button title="textme" onPress={
+                    function(){
+                        Navigation.openWeb({
+                            title:"bing",
+                            url:"http://cn.bing.com"
+                        });
+                    }}/>
                 </View>
             </View>
         );
