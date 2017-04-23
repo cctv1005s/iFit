@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {View,WebView,Dimensions} from 'react-native';
+import {View,WebView,Dimensions,StyleSheet,Text,Image,} from 'react-native';
 import Header from './WebView/BackHeader.js';
 import Navigation from '../Navigation.js';
 
@@ -18,8 +18,35 @@ export default class webView extends Component{
                 <WebView
                 source={{uri: url}}
                 scalesPageToFit={true}
+                startInLoadingState={true}  
+                renderLoading = {
+                    function(){
+                        return (
+                            <View style={styles.container}>
+						 <Image 
+                                source={require('../assets/img/loading.gif')} 
+                                style={styles.loadingImage}/>
+                         </View>
+                        )}
+                }
                 />
             </View>
         );
     }
 }
+
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  loadingImage: {
+        margin: 100,
+        height: width/3,
+        width: width/2,
+        resizeMode: Image.resizeMode.contain,
+	},
+  
+})

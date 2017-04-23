@@ -18,7 +18,7 @@ const Header = ({title,img,leftClick}) =>(
             <Image source={require('../../assets/img/back.png')} style={styles.left}/>
         </TouchableOpacity>
         
-        <Text style = {styles.title}>
+        <Text style = {styles.title} numberOfLines={1}>
             {title}
         </Text>
     </View>
