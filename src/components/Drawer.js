@@ -1,11 +1,31 @@
 import React ,{Component}from 'react';
 import {View,Text,Image,Button,StyleSheet,TouchableOpacity } from 'react-native';
+import BACKGROUND from '../assets/img/background.png';
+
+import HOME_ICON from '../assets/img/home.png';
+import STAR_ICON from '../assets/img/star.png';
+import NOTE_ICON from '../assets/img/note.png';
 
 /**
  * 左边的抽屉模块
- * 因为图标资源的报错，所以只能够穷举所有的情况出来
- * 代码这部分有冗余
  */
+var icons = [
+    {
+        id:'Information',
+        text:'首页',
+        icon:HOME_ICON
+    },
+    {
+        id:'Collect',
+        text:'收藏',
+        icon:STAR_ICON
+    },
+    {
+        id:'Note',
+        text:'笔记',
+        icon:NOTE_ICON
+    }
+];
 
 var style = StyleSheet.create({
     view:{
@@ -23,48 +43,32 @@ var style = StyleSheet.create({
     }
 });
 
-export default class Drawer extends Component{
 
+
+export default class Drawer extends Component{
     render(){
         var navigation = this.props.navigation;
         return (
             <View style={{zIndex:10}}>
-                <Image source={require('../assets/img/background.png')} style={{width:300,height:250}}/>
-                    <TouchableOpacity 
-                        onPress={
-                            ()=>{
-                                    navigation.navigate('Information');
-                                }
-                            }
-                        style={style.view}
-                    >
-                        <Image source={require('../assets/img/home.png')} style={style.img}/>
-                        <Text style={style.text}>首页</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        onPress={
-                            ()=>{
-                                    navigation.navigate('Collect');
-                                }
-                            }
-                        style={style.view}
-                    >
-                        <Image source={require('../assets/img/star.png')} style={style.img}/>
-                        <Text style={style.text}>收藏</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        onPress={
-                            ()=>{
-                                    navigation.navigate('Note');
-                                }
-                            }
-                        style={style.view}
-                    >
-                        <Image source={require('../assets/img/note.png')} style={style.img}/>
-                        <Text style={style.text}>健身笔记</Text>
-                    </TouchableOpacity>
+                <Image source={BACKGROUND} style={{width:300,height:250}}/>
+                    {
+                        icons.map(function(ele,i){
+                            return (
+                                <TouchableOpacity 
+                                    onPress={
+                                        ()=>{
+                                                navigation.navigate(ele.id);
+                                            }
+                                        }
+                                    style={style.view}
+                                    key={i}
+                                >
+                                    <Image source={ele.icon} style={style.img}/>
+                                    <Text style={style.text}>{ele.text}</Text>
+                                </TouchableOpacity>
+                            );
+                        })
+                    }
             </View>
         );
     }
