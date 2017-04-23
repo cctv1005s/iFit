@@ -39,7 +39,7 @@ const Router = {
 };
 
 const AppNavigator = DrawerNavigator(Router,{
-    initialRouteName: 'Information',
+    initialRouteName: 'Note',
     headerMode:'none',
     mode:'card',
     contentComponent:Drawer,
