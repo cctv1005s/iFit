@@ -2,14 +2,14 @@ import React,{Component} from 'react';
 import {View,Text,ScrollView,Dimensions} from 'react-native';
 import Header from './Note/Header.js';
 import Tips from './Note/Tips.js';
-import NewNoteView from './Note/NewNoteView.js';
 
 //每一个Note条目
 import NoteD from './Note/NoteD.js';
 //Note的管理器
 import NoteManager from './Note/NoteManager.js';
+//生成新的一个Note的界面
+import NewNoteView from './Note/NewNoteView.js';
 
-var {width,height} = Dimensions.get('window');
 
 export default class Note extends Component{
     constructor(p){
