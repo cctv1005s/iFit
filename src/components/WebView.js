@@ -9,23 +9,27 @@ export default class webView extends Component{
     render(){
         var {url,title} = Navigation.get();
         url = url||"";
-        console.log(Navigation.get());
         return (
             <View style={{height:height,zIndex:1}}>
                 <Header 
                  title={title}
+                 active={true}
+                 rightClick={function(){
+                     
+                 }}
                 />
                 <WebView
-                source={{uri: url}}
-                scalesPageToFit={true}
-                startInLoadingState={true}  
-                renderLoading = {
+                 source={{uri: url}}
+                 scalesPageToFit={true}
+                 startInLoadingState={true}  
+                 renderLoading = {
                     function(){
                         return (
                             <View style={styles.container}>
-						 <Image 
-                                source={require('../assets/img/loading.gif')} 
-                                style={styles.loadingImage}/>
+						        <Image 
+                                 source={require('../assets/img/loading.gif')} 
+                                 style={styles.loadingImage}
+                                />
                          </View>
                         )}
                 }

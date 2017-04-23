@@ -7,7 +7,10 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-const Header = ({title,img,leftClick}) =>(
+import STAR_WHITE from '../../assets/img/star_white.png';
+import STAR_YELLOW from '../../assets/img/star_yellow.png';
+
+const Header = ({title,img,rightClick,active}) =>(
     <View style={styles.header}>
         <TouchableOpacity 
          onPress={()=>{
@@ -21,6 +24,16 @@ const Header = ({title,img,leftClick}) =>(
         <Text style = {styles.title} numberOfLines={1}>
             {title}
         </Text>
+
+        <TouchableOpacity 
+         onPress={()=>{
+             //返回上一层
+            if(typeof rightClick == 'function')
+                rightClick();
+         }}
+        >
+            <Image source={active?STAR_YELLOW:STAR_WHITE} style={styles.left}/>
+        </TouchableOpacity>
     </View>
 );
 
@@ -30,7 +43,7 @@ var styles = StyleSheet.create({
         width:25,
     },
     header:{
-        backgroundColor:'#FFCC33',
+        backgroundColor:'#1296db',
         flexDirection:'row',
         alignItems:'center',
         padding:10,
