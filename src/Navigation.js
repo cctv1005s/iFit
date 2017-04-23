@@ -4,6 +4,7 @@ var Navigation = {
         global.navigation.navigate(to);
         _info = info;
     },
+    
     get:function(){
         return _info;
     },
