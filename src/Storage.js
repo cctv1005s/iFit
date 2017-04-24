@@ -25,4 +25,5 @@ var storage = new Storage({
 });
 
 global.storage = storage;
+
 export default storage;
