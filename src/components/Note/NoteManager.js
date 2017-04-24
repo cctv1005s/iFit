@@ -31,5 +31,12 @@ NoteManager.delete = function(id){
     });
 }
 
+NoteManager.save = function(ele){
+    storage.save({
+        key:'note',
+        id:ele.id,
+        rawData:ele
+    });
+}
 
 export default NoteManager;

@@ -3,12 +3,18 @@ import {View,Text,ScrollView,Dimensions} from 'react-native';
 import Header from './Note/Header.js';
 import Tips from './Note/Tips.js';
 
+
 //每一个Note条目
 import NoteD from './Note/NoteD.js';
 //Note的管理器
 import NoteManager from './Note/NoteManager.js';
-//生成或者编辑一个Note的界面
-import NoteView from './Note/NoteView.js';
+//生成一个Note的界面
+import CreateNoteView from './Note/CreateNoteView.js';
+//编辑Note的界面
+import EditNoteView from './Note/EditNoteView.js';
+
+
+global.__ele = {};
 
 var {height,width} = Dimensions.get('window');
 
@@ -20,7 +26,7 @@ export default class Note extends Component{
             viewVisible:false,//用于用空NewNoteView的显示
             notes:[],
             activeType:'heart',
-            editEle:null
+            activeEdit:-1
         };
     }
     
@@ -30,6 +36,7 @@ export default class Note extends Component{
         NoteManager
         .getAll()
         .then(function(data){
+            data = data.reverse();
             self.setState({
                 notes:data
             });
@@ -78,8 +85,7 @@ export default class Note extends Component{
                                  onEnd={(type)=>{
                                      if(type == 'edit'){
                                         self.setState({
-                                            editEle:ele,
-                                            viewVisible:true
+                                            activeEdit:i
                                         });
                                      }
                                      else{
@@ -94,7 +100,35 @@ export default class Note extends Component{
                     }
                 </ScrollView>
 
-                <NoteView />
+                <CreateNoteView 
+                 visible={viewVisible}
+                 type={this.state.activeType}
+                 onEnd={()=>{
+                     self.setState({
+                         viewVisible:false,
+                     });
+                     self.componentDidMount();
+                 }}
+                />
+
+                {
+                    this.state.notes.map(function(ele,i){
+                      if(i != self.state.activeEdit)
+                        return null;
+                      return (
+                        <EditNoteView
+                         visible={true}
+                         ele={ele}
+                         key={i}
+                         onEnd={()=>{
+                            self.setState({activeEdit:-1});
+                            self.componentDidMount();
+                         }
+                        }
+                        />
+                      );  
+                    })
+                }
 
             </View>
         );

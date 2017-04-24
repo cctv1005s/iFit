@@ -55,7 +55,7 @@ export default class NoteD extends Component {
                  style={style.circle}
                  onLongPress={()=>{
                      Alert.alert(
-                        "提示消息","选择你的操作？",
+                        "提示消息","选择你的操作",
                         [
                             {text:"取消",onPress:()=>{}},
                             {text:"编辑",onPress:()=>{this.props.onEnd('edit')}},

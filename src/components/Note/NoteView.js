@@ -5,6 +5,8 @@ import {View,Dimensions,TextInput,Image,TouchableOpacity,StyleSheet} from 'react
 import CANCEL_ICON from '../../assets/img/cancel.png';
 import YES_ICON from '../../assets/img/yes.png';
 
+import NoteManager from './NoteManager.js';
+
 var {width,height} = Dimensions.get('window');
 
 var style = StyleSheet.create({
@@ -47,20 +49,35 @@ var style = StyleSheet.create({
 });
 
 export default class NoteView extends Component{
+    constructor(p){
+        super(p);
+        this.state = {
+            text:""
+        }
+    }
+    
     render(){
+        var visible = this.props.visible;
+        if(!visible)
+            return null;
         return (
             <View style={style.wrapper} >
                 <View style={style.mask}></View>                
                 <View
                  style={style.header}
                 >
-                    <TouchableOpacity style={style.touch}>
+                    <TouchableOpacity style={style.touch} onPress={this.onCancel.bind(this)}>
                         <Image source={CANCEL_ICON} style={style.image} />
                     </TouchableOpacity>
 
-                    <TextInput style={style.input} />
+                    <TextInput 
+                     style={style.input} 
+                     autoFocus={true}
+                     value={this.state.text}
+                     onChangeText={(t)=>{this.setState({text:t})}}
+                    />
 
-                    <TouchableOpacity style={style.touch}>
+                    <TouchableOpacity style={style.touch} onPress={this.onYes.bind(this)}>
                         <Image source={YES_ICON} style={style.image} />
                     </TouchableOpacity>
                 </View>
