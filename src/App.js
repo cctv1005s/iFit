@@ -53,4 +53,13 @@ const AppNavigator = DrawerNavigator(Router,{
 
 require('./Navigation.js');
 
+
+
+storage.save({
+    key:"Collect",
+    rawData:{
+        data:[1,2,3,4,5]
+    }
+});
+
 export default () => <AppNavigator />;

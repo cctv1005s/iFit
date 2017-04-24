@@ -2472,6 +2472,12 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
+kp@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/kp/-/kp-1.1.1.tgz#14040ebe28d8803bc40f8c478c2027d043f9a83f"
+  dependencies:
+    debug "^2.2.0"
+
 lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
