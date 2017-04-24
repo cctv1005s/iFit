@@ -107,7 +107,6 @@ export default class FitTime extends Component {
           }
 
           var realDatasource = [];
-          console.log("aaaaaa" + _datasource.length / 4);
           for (var i = 0, j = 0; i < _datasource.length / 4; i++ , j += 4) {
             realDatasource.push([
                _datasource[j],
@@ -116,7 +115,6 @@ export default class FitTime extends Component {
                _datasource[j + 3],
             ]);
           }
-          console.log(realDatasource);
           self.setState({
             dataSource: self.state.dataSource.cloneWithRows(realDatasource),
             loaded: true,
