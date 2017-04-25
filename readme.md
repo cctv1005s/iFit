@@ -28,6 +28,26 @@ IFIT是一款健身类APP，从各大健身网站爬取健身资讯进行整合�
 
   在代码根目录下的CMD中输入*react-native run-android*或者*react-native run-ios*（看你手机是安卓版本的还是ios版本的），需要编译几分钟。如果不出什么问题应该会在手机上直接安装运行了。如果屏幕上出现红色，请保证你的手机和电脑在同意wifi下，然后摇晃手机，会出现设置，进入*Dev Settings - Debug server host & port for device*，然后输入你电脑的IP地址(cmd中输入ipconfig可获取)和端口号(8081)，确定之后再次摇晃手机点击最上面的*Reload JS*，然后就可以了。
 
+  > #### 编译
+  >
+  > ![](https://raw.githubusercontent.com/dogloving/iFit/master/src/assets/img/compile.png)
+
+  > #### 设置
+  >
+  > ![](https://raw.githubusercontent.com/dogloving/iFit/master/src/assets/img/settings.jpg)
+
+  > #### 设置IP和端口
+  >
+  > ![](https://raw.githubusercontent.com/dogloving/iFit/master/src/assets/img/ipport.jpg)
+
+  > #### APP内容
+  >
+  > ![](https://raw.githubusercontent.com/dogloving/iFit/master/src/assets/img/weiboview.jpg)
+
+  ​
+
+  ​
+
 ## 还有疑惑
 
 请登陆React-Native中文官网查看文档，[官网链接](https://reactnative.cn/docs/0.43/getting-started.html)
