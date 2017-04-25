@@ -12,6 +12,10 @@ import Note from './components/Note.js';
 import Collect from './components/Collect.js';
 import WebView from './components/WebView.js';
 
+import ColectStorage from './components/Collects/Storage.js';
+//初始化Collect storage
+ColectStorage.init();
+
 const Router = {
     Information:{
         name:'Information',
@@ -39,7 +43,7 @@ const Router = {
 };
 
 const AppNavigator = DrawerNavigator(Router,{
-    initialRouteName: 'Note',
+    initialRouteName: 'Information',
     headerMode:'none',
     mode:'card',
     contentComponent:Drawer,
@@ -48,5 +52,14 @@ const AppNavigator = DrawerNavigator(Router,{
 
 
 require('./Navigation.js');
+
+
+
+storage.save({
+    key:"Collect",
+    rawData:{
+        data:[1,2,3,4,5]
+    }
+});
 
 export default () => <AppNavigator />;
