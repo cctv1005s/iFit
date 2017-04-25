@@ -70,70 +70,70 @@ export default class Keep extends Component {
     var self = this;
     var _datasource = [];
     //获取第一个网站
-    fetch('https://www.elitefts.com/education/')
+    fetch('http://www.hiyd.com/bb/')
       .then(res => { return res.blob(); })
       .then(blob => {
         var reader = new FileReader();
         reader.readAsText(blob, 'UTF-8');
         reader.onload = function (e) {
           var $ = cheerio.load(reader.result);
-          var allText = $('.featured-image a');
-          var allPhoto = $('.featured-image img');
-          for (var i = 4; i < allText.length; i++) {
+          var allText = $('.train-title a');
+          var allPhoto = $('.train-pic img');
+          for (var i = 0; i < allText.length; i++) {
             _datasource.push({
               url: allText[i].attribs.href,
               title: allPhoto[i].attribs.alt,
               photo: allPhoto[i].attribs.src
             });
           }    
-    fetch('https://www.elitefts.com/education/page/2/')
+    fetch('http://www.hiyd.com/bb/?page=2')
       .then(res => { return res.blob(); })
       .then(blob => {
         var reader = new FileReader();
         reader.readAsText(blob, 'UTF-8');
         reader.onload = function (e) {
           var $ = cheerio.load(reader.result);
-          var allText = $('.featured-image a');
-          var allPhoto = $('.featured-image img');
-          for (var i = 4; i < allText.length; i++) {
+          var allText = $('.train-title a');
+          var allPhoto = $('.train-pic img');
+          for (var i = 0; i < allText.length; i++) {
             _datasource.push({
               url: allText[i].attribs.href,
               title: allPhoto[i].attribs.alt,
               photo: allPhoto[i].attribs.src
             });
-          } 
-    fetch('https://www.elitefts.com/education/page/3/')
+          }    
+    fetch('http://www.hiyd.com/bb/?page=3')
       .then(res => { return res.blob(); })
       .then(blob => {
         var reader = new FileReader();
         reader.readAsText(blob, 'UTF-8');
         reader.onload = function (e) {
           var $ = cheerio.load(reader.result);
-          var allText = $('.featured-image a');
-          var allPhoto = $('.featured-image img');
-          for (var i = 4; i < allText.length; i++) {
+          var allText = $('.train-title a');
+          var allPhoto = $('.train-pic img');
+          for (var i = 0; i < allText.length; i++) {
             _datasource.push({
               url: allText[i].attribs.href,
               title: allPhoto[i].attribs.alt,
               photo: allPhoto[i].attribs.src
             });
-          } 
-    fetch('https://www.elitefts.com/education/page/4/')
+          }    
+    fetch('http://www.hiyd.com/bb/?page=4')
       .then(res => { return res.blob(); })
       .then(blob => {
         var reader = new FileReader();
         reader.readAsText(blob, 'UTF-8');
         reader.onload = function (e) {
           var $ = cheerio.load(reader.result);
-          var allText = $('.featured-image a');
-          var allPhoto = $('.featured-image img');
-          for (var i = 4; i < allText.length; i++) {
+          var allText = $('.train-title a');
+          var allPhoto = $('.train-pic img');
+          for (var i = 0; i < allText.length; i++) {
             _datasource.push({
               url: allText[i].attribs.href,
               title: allPhoto[i].attribs.alt,
               photo: allPhoto[i].attribs.src
             });
-          } 
+          }    
 
 
 
