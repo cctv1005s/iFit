@@ -6,16 +6,17 @@ import {
   Text,
   Image,
   ListView,
-  StyleSheet,
   TouchableOpacity,
   Dimensions,
   WebView
 } from 'react-native';
 import Header from '../Header.js';
-import cheerio from 'cheerio-without-node-native';
 import Navigation from '../../Navigation.js';
+import styles from '../SinaWeibo/SinaWeiboStyles.js';
+import FetchDatas from '../SinaWeibo/FetchData.js';
+import RenderView from '../SinaWeibo/RenderView.js'
+import LoadingImage from '../../assets/img/loading.gif'
 
-var {width,height} = Dimensions.get('window');
 /**
  * 概览
  */
@@ -23,7 +24,7 @@ export default class SinaWeibo extends Component {
 
   static navigationOptions = {
     tabBar: {
-      label: 'Weibo',
+      label: 'SinaWeibo',
       icon: ({ tintColor }) => (
         <Image
           source={require('../../assets/img/weibo.png')}
@@ -50,7 +51,7 @@ export default class SinaWeibo extends Component {
      * 读取数据
      */
     storage.load({
-      key: 'fittime',
+      key: 'SinaWeibo',
       autoSync: true,
     })
       .then(function (ret) {
@@ -66,126 +67,18 @@ export default class SinaWeibo extends Component {
         self.fetchData();
       });
   }
-  fetchData() {
+
+  fetchData(){
     var self = this;
-    var _datasource = [];
-    //获取第一个网站
-    fetch('http://www.hiyd.com/jianshenzhishi/')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.item-pic a');
-          var allPhoto = $('.item-pic a img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allPhoto[i].attribs.alt,
-              photo: allPhoto[i].attribs.src
-            });
-          }
-
-    //获取第二个网站
-    fetch('http://www.hiyd.com/jianshenzhishi/?page=2')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.item-pic a');
-          var allPhoto = $('.item-pic a img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allPhoto[i].attribs.alt,
-              photo: allPhoto[i].attribs.src
-            });
-          }
-      //获取第三个网站
-    fetch('http://www.hiyd.com/jianshenzhishi/?page=3')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.item-pic a');
-          var allPhoto = $('.item-pic a img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allPhoto[i].attribs.alt,
-              photo: allPhoto[i].attribs.src
-            });
-          }
-      //获取第二个网站
-    fetch('http://www.hiyd.com/jianshenzhishi/?page=4')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.item-pic a');
-          var allPhoto = $('.item-pic a img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allPhoto[i].attribs.alt,
-              photo: allPhoto[i].attribs.src
-            });
-          }
-    
-
-
-          var realDatasource = [];
-          console.log("weibo: " + _datasource.length / 4);
-          for (var i = 0, j = 0; i < _datasource.length / 4; i++ , j += 4) {
-            realDatasource.push([
-               _datasource[j],
-               _datasource[j + 1],
-               _datasource[j + 2],
-               _datasource[j + 3],
-            ]);
-          }
-          console.log(realDatasource);
-          self.setState({
-            dataSource: self.state.dataSource.cloneWithRows(realDatasource),
-            loaded: true,
-          });
-
-          //讲数据添加进入缓存
-          self.saveData();
-
-        }
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-        };
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-      };
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-      };
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
+    var index = 1;
+    var size = 12;
+    FetchDatas.fetchData(self,index,size);
   }
 
   //加入缓存
   saveData() {
     storage.save({
-      key: "weibo",
+      key: "SinaWeibo",
       rawData: this.state.dataSource,
       expires: 1000 * 60 * 5 //缓存过期时间
     });
@@ -195,43 +88,19 @@ export default class SinaWeibo extends Component {
    * 返回网页
    */
   render() {
+    var self = this;
     if (!this.state.loaded) {
-      return this.renderLoadingView();
+      return RenderView.renderLoadingView(LoadingImage);
     }
-    else return this.renderView();
-  }
-
-  //过渡界面
-  renderLoadingView() {
-    return (
-      <View style={styles.loadingContainer}>
-        <Image
-          source={require('../../assets/img/loading.gif')}
-          style={styles.loadingImage} />
-      </View>
-    )
-  };
-
-  //返回加载成功的界面
-  renderView() {
-    return (
-      <View style={styles.container}>
-        <Header title="weibo" />
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow.bind(this)}
-          initialListSize={10}  //表示初始加载行数->提高加载速度
-          scrollRenderAheadDistance={20} //当一个行接近屏幕范围20像素之内的时候，就开始渲染这一行
-          style={styles.listview} />
-      </View>
-    );
+    else return RenderView.renderView('SinaWeibo', self);
   }
 
   _pressRow(rowData) {
-    var imageUrl = rowData.url;
+    var theUrl = "http://www.fitnes.cn" + rowData.url;
     Navigation.openWeb({
       title: rowData.title,
-      url: imageUrl,
+      url: theUrl,
+      imageUrl: rowData.imageUrl,
     });
   }
 
@@ -245,6 +114,7 @@ export default class SinaWeibo extends Component {
           onPress={() => self._pressRow({
             url: rowData[0].url,
             title: rowData[0].title,
+            imageUrl: rowData[0].photo,
           })}>
           <Image style={styles.BigImage}
             source={{ uri: rowData[0].photo }}>
@@ -254,108 +124,38 @@ export default class SinaWeibo extends Component {
             </Text>
           </Image>
         </TouchableOpacity>
-        <View style={styles.line}/>
+        <View style={styles.line} />
 
-          {rowData.map(function (ele, i) {
-            if (i > 0) {
-              return (
-                <View key={i} >
+        {rowData.map(function (ele, i) {
+          if (i > 0) {
+            return (
+              <View key={i} >
                 <TouchableOpacity
-                  style={ styles.smallContainer}
+                  style={styles.smallContainer}
                   onPress={() => self._pressRow({
                     url: ele.url,
                     title: ele.title,
+                    imageUrl: ele.photo,
                   })}>
                   <Image style={styles.smallImage}
                     source={{ uri: ele.photo }} />
                   <Text style={styles.smallTextView} >
-                      {ele.title}
-                   </Text>
+                    {ele.title}
+                  </Text>
                 </TouchableOpacity>
                 {
-                    (i !== 3)?
-                    <View style={styles.line}/>
+                  (i !== 3) ?
+                    <View style={styles.line} />
                     :
-                    <View/>
+                    <View />
                 }
-                    
-                </View>
-              );
-            }
-          })}
+              </View>
+            );
+          }
+        })}
       </View >
     );
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F0F0F0',
-  },
-  ImageTextContainer: {
-    //borderWidth: 3,
-    margin: 10,
-    backgroundColor: 'white',
-  },
-  bigContainer: {
-    margin:10,
-  },
-  smallContainer: {
-     marginBottom:5,
-     marginHorizontal: 5,
-     flexDirection: 'row',
-     alignItems: 'center', 
-     justifyContent: 'center',
-  },
-  line: {
-      height: 2,
-      backgroundColor: '#F0F0F0',
-      flex: 1,
-      marginHorizontal: 5,
-  },
-  loadingImage: {
-        margin: 100,
-        height: width/3,
-        width: width/2,
-        resizeMode: Image.resizeMode.contain,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  BigImage: {
-    flex: 1,
-    height: Dimensions.get('window').height / 4,
-    resizeMode: Image.resizeMode.cover,
-  },
-  smallImage: {
-    flex: 0,
-    margin: 10,
-    height: Dimensions.get('window').width / 5,
-    width: Dimensions.get('window').width / 5,
-    //resizeMode: Image.resizeMode.cover,
-  },
-  listView: {
-    paddingTop: 20,
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
-  bigTextView: {
-    fontSize: 20,
-    marginTop: Dimensions.get('window').height / 4 - 30,
-    fontWeight: 'bold',
-    fontFamily: 'Cochin',
-    color: 'white',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  },
-  smallTextView: {
-    flex: 1,
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-});
 
 AppRegistry.registerComponent('SinaWeibo', () => SinaWeibo);

@@ -12,8 +12,12 @@ import {
   WebView
 } from 'react-native';
 import Header from '../Header.js';
-import cheerio from 'cheerio-without-node-native';
 import Navigation from '../../Navigation.js';
+import styles from '../Keep/KeepStyles.js';
+import FetchDatas from '../Keep/FetchData.js';
+import RenderView from '../Keep/RenderView.js'
+import LoadingImage from '../../assets/img/loading.gif'
+
 
 var {width,height} = Dimensions.get('window');
 /**
@@ -66,113 +70,13 @@ export default class Keep extends Component {
         self.fetchData();
       });
   }
+
+
   fetchData() {
     var self = this;
-    var _datasource = [];
-    //获取第一个网站
-    fetch('http://www.hiyd.com/bb/')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.train-title a');
-          var allPhoto = $('.train-pic img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allPhoto[i].attribs.alt,
-              photo: allPhoto[i].attribs.src
-            });
-          }    
-    fetch('http://www.hiyd.com/bb/?page=2')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.train-title a');
-          var allPhoto = $('.train-pic img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allPhoto[i].attribs.alt,
-              photo: allPhoto[i].attribs.src
-            });
-          }    
-    fetch('http://www.hiyd.com/bb/?page=3')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.train-title a');
-          var allPhoto = $('.train-pic img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allPhoto[i].attribs.alt,
-              photo: allPhoto[i].attribs.src
-            });
-          }    
-    fetch('http://www.hiyd.com/bb/?page=4')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.train-title a');
-          var allPhoto = $('.train-pic img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allPhoto[i].attribs.alt,
-              photo: allPhoto[i].attribs.src
-            });
-          }    
-
-
-
-          var realDatasource = [];
-          console.log("keep: " + _datasource.length / 4);
-          for (var i = 0, j = 0; i < _datasource.length / 4; i++ , j += 4) {
-            realDatasource.push([
-               _datasource[j]
-            ]);
-          }
-          console.log(realDatasource);
-          self.setState({
-            dataSource: self.state.dataSource.cloneWithRows(realDatasource),
-            loaded: true,
-          });
-
-          //讲数据添加进入缓存
-          self.saveData();
-
-        }
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-        };
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-      };
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-      };
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
+    var index = 1;
+    var size = 12;
+    FetchDatas.fetchData(self,index,size);
   }
 
   //加入缓存
@@ -188,36 +92,11 @@ export default class Keep extends Component {
    * 返回网页
    */
   render() {
+    var self = this;
     if (!this.state.loaded) {
-      return this.renderLoadingView();
+      return RenderView.renderLoadingView(LoadingImage);
     }
-    else return this.renderView();
-  }
-
-  //过渡界面
-  renderLoadingView() {
-    return (
-      <View style={styles.loadingContainer}>
-        <Image
-          source={require('../../assets/img/loading.gif')}
-          style={styles.loadingImage} />
-      </View>
-    )
-  };
-
-  //返回加载成功的界面
-  renderView() {
-    return (
-      <View style={styles.container}>
-        <Header title="keep" />
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow.bind(this)}
-          initialListSize={10}  //表示初始加载行数->提高加载速度
-          scrollRenderAheadDistance={20} //当一个行接近屏幕范围20像素之内的时候，就开始渲染这一行
-          style={styles.listview} />
-      </View>
-    );
+    else return RenderView.renderView('SinaWeibo', self);
   }
 
   _pressRow(rowData) {
@@ -281,74 +160,5 @@ export default class Keep extends Component {
   }
 }
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F0F0F0',
-  },
-  ImageTextContainer: {
-    //borderWidth: 3,
-    margin: 10,
-    backgroundColor: 'white',
-  },
-  bigContainer: {
-    margin:10,
-  },
-  smallContainer: {
-     marginBottom:5,
-     marginHorizontal: 5,
-     flexDirection: 'row',
-     alignItems: 'center', 
-     justifyContent: 'center',
-  },
-  line: {
-      height: 2,
-      backgroundColor: '#F0F0F0',
-      flex: 1,
-      marginHorizontal: 5,
-  },
-  loadingImage: {
-        margin: 100,
-        height: width/3,
-        width: width/2,
-        resizeMode: Image.resizeMode.contain,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  BigImage: {
-    flex: 1,
-    height: Dimensions.get('window').height / 4,
-    resizeMode: Image.resizeMode.cover,
-  },
-  smallImage: {
-    flex: 0,
-    margin: 10,
-    height: Dimensions.get('window').width / 5,
-    width: Dimensions.get('window').width / 5,
-    //resizeMode: Image.resizeMode.cover,
-  },
-  listView: {
-    paddingTop: 20,
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
-  bigTextView: {
-    fontSize: 20,
-    marginTop: Dimensions.get('window').height / 4 - 30,
-    fontWeight: 'bold',
-    fontFamily: 'Cochin',
-    color: 'white',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  },
-  smallTextView: {
-    flex: 1,
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-});
 
 AppRegistry.registerComponent('Keep', () => Keep);
