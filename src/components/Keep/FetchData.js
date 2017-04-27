@@ -5,8 +5,8 @@
 
   var _datasource = [];
 
-  var getData = function(self,index,size){
-    if(index > size){
+  var getData = function(self,currentPage,totalPage){
+    if(currentPage > totalPage){
       var realDatasource = [];
           console.log("keep: " + _datasource.length / 4);
           for (var i = 0, j = 0; i < _datasource.length / 4; i++ , j += 4) {
@@ -26,7 +26,7 @@
           //讲数据添加进入缓存
           self.saveData();
     }else{
-      var url = 'http://www.hiyd.com/bb/?page='+index;
+      var url = 'http://www.hiyd.com/bb/?page='+currentPage;
       fetch(url)
       .then(res => { return res.blob(); })
       .then(blob => {
@@ -44,7 +44,7 @@
             });
           }    
           
-            getData(self,index+1,size);
+            getData(self,currentPage+1,totalPage);
            }
       })
       .catch((error) => {
@@ -55,8 +55,8 @@
 
 
 
-  FetchDatas.fetchData = function(self,index,size) {
-    getData(self,index,size);
+  FetchDatas.fetchData = function(self,currentPage,totalPage) {
+    getData(self,currentPage,totalPage);
   }
 
   export default FetchDatas;

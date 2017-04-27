@@ -70,9 +70,9 @@ export default class SinaWeibo extends Component {
 
   fetchData(){
     var self = this;
-    var index = 1;
-    var size = 12;
-    FetchDatas.fetchData(self,index,size);
+    var currentPage = 1;
+    var totalPage = 12;
+    FetchDatas.fetchData(self,currentPage,totalPage);
   }
 
   //加入缓存

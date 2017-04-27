@@ -74,9 +74,9 @@ export default class Keep extends Component {
 
   fetchData() {
     var self = this;
-    var index = 1;
-    var size = 12;
-    FetchDatas.fetchData(self,index,size);
+    var currentPage = 1;
+    var totalPage = 12;
+    FetchDatas.fetchData(self,currentPage,totalPage);
   }
 
   //加入缓存
@@ -96,7 +96,7 @@ export default class Keep extends Component {
     if (!this.state.loaded) {
       return RenderView.renderLoadingView(LoadingImage);
     }
-    else return RenderView.renderView('SinaWeibo', self);
+    else return RenderView.renderView('Keep', self);
   }
 
   _pressRow(rowData) {
