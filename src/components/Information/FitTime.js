@@ -70,7 +70,9 @@ export default class FitTime extends Component {
 
   fetchData() {
     var self = this;
-     Fetch.fetchData(self);
+    var url1 = 'http://www.fitnes.cn/jianshen';
+    var url2 = 'http://www.fitnes.cn/jianshen/index_2.html';
+     Fetch.fetchData(self,url1,url2);
   }
 
   //加入缓存
