@@ -70,73 +70,9 @@ export default class FitTime extends Component {
 
   fetchData() {
     var self = this;
-    var _datasource = [];
-    //获取第一个网站
-    fetch('http://www.fitnes.cn/jianshen')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'GBK');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.inner-wrap').children('a');
-          var allPhoto = $('.nodeImg').children('img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allText[i].attribs.title,
-              photo: allPhoto[i].attribs.src
-            });
-          }
-
-          //获取第二个网站
-    fetch('http://www.fitnes.cn/jianshen/index_2.html')
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'GBK');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.inner-wrap').children('a');
-          var allPhoto = $('.nodeImg').children('img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allText[i].attribs.title,
-              photo: allPhoto[i].attribs.src
-            });
-          }
-
-          var realDatasource = [];
-          for (var i = 0, j = 0; i < _datasource.length / 4; i++ , j += 4) {
-            realDatasource.push([
-               _datasource[j],
-               _datasource[j + 1],
-               _datasource[j + 2],
-               _datasource[j + 3],
-            ]);
-          }
-          self.setState({
-            dataSource: self.state.dataSource.cloneWithRows(realDatasource),
-            loaded: true,
-          });
-
-          //讲数据添加进入缓存
-          self.saveData();
-
-        }
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-
-
-        };
-      })
-      .catch((error) => {
-        console.warn(error);
-
-      });
+    var url1 = 'http://www.fitnes.cn/jianshen';
+    var url2 = 'http://www.fitnes.cn/jianshen/index_2.html';
+     Fetch.fetchData(self,url1,url2);
   }
 
   //加入缓存

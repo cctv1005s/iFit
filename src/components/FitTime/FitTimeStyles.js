@@ -1,10 +1,10 @@
 import {
-   StyleSheet,
-   Dimensions,
-   Image,
+  StyleSheet,
+  Dimensions,
+  Image,
 } from 'react-native';
 
-var {width,height} = Dimensions.get('window');
+var { width, height } = Dimensions.get('window');
 
 var styles = StyleSheet.create({
   container: {
@@ -17,33 +17,38 @@ var styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   bigContainer: {
-    margin:10,
+    margin: 10,
   },
   smallContainer: {
-     marginBottom:5,
-     marginHorizontal: 5,
-     flexDirection: 'row',
-     alignItems: 'center', 
-     justifyContent: 'center',
+    marginBottom: 5,
+    marginHorizontal: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   line: {
-      height: 2,
-      backgroundColor: '#F0F0F0',
-      flex: 1,
-      marginHorizontal: 5,
+    height: 2,
+    backgroundColor: '#F0F0F0',
+    flex: 1,
+    marginHorizontal: 5,
   },
   loadingImage: {
-        margin: 100,
-        height: width/3,
-        width: width/2,
-        resizeMode: Image.resizeMode.contain,
+    height: width / 3,
+    width: width / 2,
+    resizeMode: Image.resizeMode.contain,
   },
   loadingContainer: {
+    padding: 100,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-  }, 
+  },
+  loadingText: {
+    fontSize: width / 30,
+    color: '#A3A3A3',
+    fontWeight: 'bold',
+  },
   BigImage: {
     flex: 1,
     height: Dimensions.get('window').height / 4,

@@ -47,6 +47,9 @@ export default class webView extends Component {
                                         source={require('../assets/img/loading.gif')}
                                         style={styles.loadingImage}
                                     />
+                                    <Text style = {styles.text}>
+                                        加载中
+                                    </Text>
                                 </View>
                             )
                         }
@@ -59,15 +62,20 @@ export default class webView extends Component {
 var styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
+        padding: 100,
     },
     loadingImage: {
-        margin: 100,
         height: width / 3,
         width: width / 2,
         resizeMode: Image.resizeMode.contain,
     },
-
+    text: {
+        fontSize: width/30,
+        color: '#A3A3A3',
+        fontWeight: 'bold',
+    },
 })

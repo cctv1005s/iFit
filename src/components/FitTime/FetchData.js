@@ -3,10 +3,10 @@
 
   var fetchDatas = {};
 
-  fetchDatas.fetchData= function(self) {
+  fetchDatas.fetchData= function(self,url1,url2) {
     var _datasource = [];
     //获取第一个网站
-    fetch('http://www.fitnes.cn/jianshen')
+    fetch(url1)
       .then(res => { return res.blob(); })
       .then(blobs => {
         var reader = new FileReader();
@@ -25,7 +25,7 @@
           }
 
           //获取第二个网站
-       fetch('http://www.fitnes.cn/jianshen/index_2.html')
+       fetch(url2)
       .then(res => { return res.blob(); })
       .then(blob => {
         var reader = new FileReader();
