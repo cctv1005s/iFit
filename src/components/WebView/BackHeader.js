@@ -6,6 +6,7 @@ import {
     Text,
     TouchableOpacity
 } from 'react-native';
+import Navigation from '../../Navigation.js';
 
 import STAR_WHITE from '../../assets/img/star_white.png';
 import STAR_YELLOW from '../../assets/img/star_yellow.png';
@@ -15,7 +16,7 @@ const Header = ({title,img,rightClick,active}) =>(
         <TouchableOpacity 
          onPress={()=>{
              //返回上一层
-             global.navigation.navigation.goBack(null);
+             global.navigation.navigation.goBack(null)
          }}
         >
             <Image source={require('../../assets/img/back.png')} style={styles.left}/>

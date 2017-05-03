@@ -21,6 +21,9 @@ RenderView.renderLoadingView = function(loadingImgUrl) {
         <Image
           source={loadingImgUrl}
           style={styles.loadingImage} />
+        <Text style = {styles.loadingText}>
+          加载中...
+       </Text>
       </View>
     )
   };

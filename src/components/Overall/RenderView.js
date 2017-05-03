@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Header from '../Header.js';
 import Navigation from '../../Navigation.js';
-import styles from '../FitTime/FitTimeStyles.js';
+import styles from '../Overall/OverallStyles.js';
 
 var renderView = {};
 
