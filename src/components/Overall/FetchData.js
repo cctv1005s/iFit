@@ -8,7 +8,7 @@
   var getData = function(self,currentPage,totalPage){
     if(currentPage > totalPage){
       var realDatasource = [];
-          console.log("weibo: " + _datasource.length / 4);
+          console.log("overall: " + _datasource.length / 4);
           for (var i = 0, j = 0; i < _datasource.length / 4; i++ , j += 4) {
             realDatasource.push([
                _datasource[j],
@@ -16,36 +16,33 @@
                _datasource[j + 2],
                _datasource[j + 3],
             ]);
-            weibo_gb.push([
+            overall_gb.push([
                _datasource[j],
                _datasource[j + 1],
                _datasource[j + 2],
                _datasource[j + 3],
             ]);
           }
-          
-          console.log(realDatasource);
           self.setState({
             dataSource: self.state.dataSource.cloneWithRows(realDatasource),
             loaded:true
           });
-         
-                     
+          
     }else{
-      var url = 'http://www.hiyd.com/jianshenzhishi/?page='+currentPage;
+      var url = 'http://www.hiyd.com/hixuetang/?page='+currentPage;
       axios.get(url)
-        .then((res) => {return res.data;})
-        .then(data => {
-            var $ = cheerio.load(data);
-            var allText = $('.item-pic a');
-            var allPhoto = $('.item-pic a img');
-            for (var i = 0; i < 4; i++) {
-              _datasource.push({
-                url: allText[i].attribs.href,
-                title: allPhoto[i].attribs.alt,
-                photo: allPhoto[i].attribs.src
-              });
-            }
+      .then(res => { return res.data;})
+      .then(data => {
+          var $ = cheerio.load(data);
+          var allText = $('.item-pic a');
+          var allPhoto = $('.item-pic a img');
+          for (var i = 0; i < 4; i++) {
+            _datasource.push({
+              url: allText[i].attribs.href,
+              title: allPhoto[i].attribs.alt,
+              photo: allPhoto[i].attribs.src
+            });
+          }    
             currentPage += 1;
             getData(self,currentPage,totalPage);
       })

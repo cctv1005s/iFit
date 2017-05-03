@@ -38,7 +38,7 @@ var style = StyleSheet.create({
         marginLeft:20
     },
     text:{
-        height:20,
+        height:30,
         marginLeft:20
     }
 });

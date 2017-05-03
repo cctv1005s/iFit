@@ -1,10 +1,10 @@
   import React from 'react';
   import cheerio from 'cheerio-without-node-native';
-
+  import axios from 'axios';
   var FetchDatas = {};
 
   var _datasource = [];
-
+  
   var getData = function(self,currentPage,totalPage){
     if(currentPage > totalPage){
       var realDatasource = [];
@@ -16,44 +16,43 @@
                _datasource[j + 2],
                _datasource[j + 3],
             ]);
+            keep_gb.push([
+               _datasource[j],
+               _datasource[j + 1],
+               _datasource[j + 2],
+               _datasource[j + 3],
+            ]);
           }
+          
           console.log(realDatasource);
           self.setState({
             dataSource: self.state.dataSource.cloneWithRows(realDatasource),
-            loaded: true,
+            loaded:true
           });
-
-          //讲数据添加进入缓存
-          self.saveData();
+            
     }else{
       var url = 'http://www.hiyd.com/bb/?page='+currentPage;
-      fetch(url)
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'UTF-8');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
+      axios.get(url)
+      .then(res => { return res.data;})
+      .then(data => {
+          var $ = cheerio.load(data);
           var allText = $('.train-title a');
           var allPhoto = $('.train-pic img');
-          for (var i = 0; i < allText.length; i++) {
+          for (var i = 0; i < 4; i++) {
             _datasource.push({
               url: allText[i].attribs.href,
               title: allPhoto[i].attribs.alt,
               photo: allPhoto[i].attribs.src
             });
           }    
-          
-            getData(self,currentPage+1,totalPage);
-           }
+          currentPage += 1;
+            getData(self,currentPage,totalPage);
       })
       .catch((error) => {
         console.warn(error);
       });
     }
   }
-
-
 
   FetchDatas.fetchData = function(self,currentPage,totalPage) {
     getData(self,currentPage,totalPage);

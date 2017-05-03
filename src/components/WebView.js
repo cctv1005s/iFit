@@ -48,7 +48,7 @@ export default class webView extends Component {
                                         style={styles.loadingImage}
                                     />
                                     <Text style = {styles.text}>
-                                        加载中
+                                        加载中...
                                     </Text>
                                 </View>
                             )
