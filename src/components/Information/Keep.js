@@ -16,8 +16,7 @@ import Navigation from '../../Navigation.js';
 import styles from '../Keep/KeepStyles.js';
 import FetchDatas from '../Keep/FetchData.js';
 import RenderView from '../Keep/RenderView.js'
-import LoadingImage from '../../assets/img/loading.gif'
-
+import LoadingImage from '../../assets/img/loading.gif';
 
 var {width,height} = Dimensions.get('window');
 /**
@@ -45,7 +44,7 @@ export default class Keep extends Component {
       }),
       loaded: false,
     };
-    //this.fetchData = this.fetchData.bind(this); 
+    this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount() {
@@ -53,30 +52,25 @@ export default class Keep extends Component {
     /**
      * 读取数据
      */
-    storage.load({
-      key: 'fittime',
-      autoSync: true,
-    })
-      .then(function (ret) {
-        //检测缓存，没有缓存则抛出错误，重新加载缓存
-        if (typeof ret !== 'array' || ret.length == 0)
-          throw new Error("没有数据");
-        self.setState({
-          dataSource: self.state.dataSource.cloneWithRows(ret),
-          loaded: true,
-        });
-      })
-      .catch(function (err) {
-        self.fetchData();
+     
+    if(keep_gb.length !== 0){
+      this.setState({
+        dataSource:this.state.dataSource.cloneWithRows(keep_gb),
+        loaded:true
       });
+    }else{
+      self.fetchData();
+    }
   }
 
 
   fetchData() {
     var self = this;
+    keep_gb = [];
     var currentPage = 1;
-    var totalPage = 12;
+    var totalPage = 6;
     FetchDatas.fetchData(self,currentPage,totalPage);
+    self.saveData();
   }
 
   //加入缓存
@@ -84,7 +78,7 @@ export default class Keep extends Component {
     storage.save({
       key: "keep",
       rawData: this.state.dataSource,
-      expires: 1000 * 60 * 5 //缓存过期时间
+      expires:1000 * 3600 * 24
     });
   }
 
@@ -97,6 +91,7 @@ export default class Keep extends Component {
       return RenderView.renderLoadingView(LoadingImage);
     }
     else return RenderView.renderView('Keep', self);
+    
   }
 
   _pressRow(rowData) {

@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   ListView,
+  StyleSheet,
   TouchableOpacity,
   Dimensions,
   WebView
@@ -15,8 +16,9 @@ import Navigation from '../../Navigation.js';
 import styles from '../SinaWeibo/SinaWeiboStyles.js';
 import FetchDatas from '../SinaWeibo/FetchData.js';
 import RenderView from '../SinaWeibo/RenderView.js'
-import LoadingImage from '../../assets/img/loading.gif'
+import LoadingImage from '../../assets/img/loading.gif';
 
+var {width,height} = Dimensions.get('window');
 /**
  * 概览
  */
@@ -42,7 +44,7 @@ export default class SinaWeibo extends Component {
       }),
       loaded: false,
     };
-    //this.fetchData = this.fetchData.bind(this); 
+    this.fetchData = this.fetchData.bind(this); 
   }
 
   componentDidMount() {
@@ -50,37 +52,33 @@ export default class SinaWeibo extends Component {
     /**
      * 读取数据
      */
-    storage.load({
-      key: 'SinaWeibo',
-      autoSync: true,
-    })
-      .then(function (ret) {
-        //检测缓存，没有缓存则抛出错误，重新加载缓存
-        if (typeof ret !== 'array' || ret.length == 0)
-          throw new Error("没有数据");
-        self.setState({
-          dataSource: self.state.dataSource.cloneWithRows(ret),
-          loaded: true,
-        });
-      })
-      .catch(function (err) {
-        self.fetchData();
+     
+    if(weibo_gb.length !== 0){
+      this.setState({
+        dataSource:this.state.dataSource.cloneWithRows(weibo_gb),
+        loaded:true
       });
+    }else{
+      self.fetchData();
+    }
   }
 
-  fetchData(){
+
+  fetchData() {
     var self = this;
+    weibo_gb = [];
     var currentPage = 1;
-    var totalPage = 12;
+    var totalPage = 6;
     FetchDatas.fetchData(self,currentPage,totalPage);
+    self.saveData();
   }
 
   //加入缓存
   saveData() {
     storage.save({
-      key: "SinaWeibo",
+      key: "weibo",
       rawData: this.state.dataSource,
-      expires: 1000 * 60 * 5 //缓存过期时间
+      expires:1000 * 3600 * 24
     });
   }
 
@@ -93,14 +91,14 @@ export default class SinaWeibo extends Component {
       return RenderView.renderLoadingView(LoadingImage);
     }
     else return RenderView.renderView('SinaWeibo', self);
+    
   }
 
   _pressRow(rowData) {
-    var theUrl = "http://www.fitnes.cn" + rowData.url;
+    var imageUrl = rowData.url;
     Navigation.openWeb({
       title: rowData.title,
-      url: theUrl,
-      imageUrl: rowData.imageUrl,
+      url: imageUrl,
     });
   }
 
@@ -114,7 +112,6 @@ export default class SinaWeibo extends Component {
           onPress={() => self._pressRow({
             url: rowData[0].url,
             title: rowData[0].title,
-            imageUrl: rowData[0].photo,
           })}>
           <Image style={styles.BigImage}
             source={{ uri: rowData[0].photo }}>
@@ -124,38 +121,39 @@ export default class SinaWeibo extends Component {
             </Text>
           </Image>
         </TouchableOpacity>
-        <View style={styles.line} />
+        <View style={styles.line}/>
 
-        {rowData.map(function (ele, i) {
-          if (i > 0) {
-            return (
-              <View key={i} >
+          {rowData.map(function (ele, i) {
+            if (i > 0) {
+              return (
+                <View key={i} >
                 <TouchableOpacity
-                  style={styles.smallContainer}
+                  style={ styles.smallContainer}
                   onPress={() => self._pressRow({
                     url: ele.url,
                     title: ele.title,
-                    imageUrl: ele.photo,
                   })}>
                   <Image style={styles.smallImage}
                     source={{ uri: ele.photo }} />
                   <Text style={styles.smallTextView} >
-                    {ele.title}
-                  </Text>
+                      {ele.title}
+                   </Text>
                 </TouchableOpacity>
                 {
-                  (i !== 3) ?
-                    <View style={styles.line} />
+                    (i !== 3)?
+                    <View style={styles.line}/>
                     :
-                    <View />
+                    <View/>
                 }
-              </View>
-            );
-          }
-        })}
+                    
+                </View>
+              );
+            }
+          })}
       </View >
     );
   }
 }
+
 
 AppRegistry.registerComponent('SinaWeibo', () => SinaWeibo);

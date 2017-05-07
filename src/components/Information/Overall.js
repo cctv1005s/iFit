@@ -13,21 +13,21 @@ import {
 import Header from '../Header.js';
 import Navigation from '../../Navigation.js';
 import styles from '../FitTime/FitTimeStyles.js';
-import Fetch from '../FitTime/FetchData.js';
+import Fetch from '../FitTime/FetchDatas.js';
 import RenderView from '../FitTime/RenderView.js'
 import LoadingImage from '../../assets/img/loading.gif'
 
 /**
  * 概览
  */
-export default class Overall extends Component {
+export default class FitTime extends Component {
 
   static navigationOptions = {
     tabBar: {
-      label: 'Megafit',
+      label: 'FitTime',
       icon: ({ tintColor }) => (
         <Image
-          source={require('../../assets/img/overall.png')}
+          source={require('../../assets/img/fittime.png')}
           style={{ height: 18, width: 18 }}
         />
       ),
@@ -51,7 +51,7 @@ export default class Overall extends Component {
      * 读取数据
      */
     storage.load({
-      key: 'Megafit',
+      key: 'fittime',
       autoSync: true,
     })
       .then(function (ret) {
@@ -70,15 +70,15 @@ export default class Overall extends Component {
 
   fetchData() {
     var self = this;
-    var url1 = 'http://www.fitnes.cn/jianshen/index_3.html';
-    var url2 = 'http://www.fitnes.cn/jianshen/index_4.html';
+    var url1 = 'http://www.fitsns.cn/forum/block/jszs.html?s=forum%2Fblock%2Fjszs.html&MForumPost_page=7';
+    var url2 = 'http://www.fitsns.cn/forum/block/jszs.html?s=forum%2Fblock%2Fjszs.html&MForumPost_page=8';
      Fetch.fetchData(self,url1,url2);
   }
 
   //加入缓存
   saveData() {
     storage.save({
-      key: "Megafit",
+      key: "fittime",
       rawData: this.state.dataSource,
       expires: 1000 * 60 * 5 //缓存过期时间
     });
@@ -92,14 +92,13 @@ export default class Overall extends Component {
     if (!this.state.loaded) {
       return RenderView.renderLoadingView(LoadingImage);
     }
-    else return RenderView.renderView('Megafit', self);
+    else return RenderView.renderView('FitTime', self);
   }
 
   _pressRow(rowData) {
-    var theUrl = "http://www.fitnes.cn" + rowData.url;
     Navigation.openWeb({
       title: rowData.title,
-      url: theUrl,
+      url: rowData.url,
       imageUrl: rowData.imageUrl,
     });
   }

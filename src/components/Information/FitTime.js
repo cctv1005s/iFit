@@ -13,7 +13,7 @@ import {
 import Header from '../Header.js';
 import Navigation from '../../Navigation.js';
 import styles from '../FitTime/FitTimeStyles.js';
-import Fetch from '../FitTime/FetchData.js';
+import Fetch from '../FitTime/FetchDatas.js';
 import RenderView from '../FitTime/RenderView.js'
 import LoadingImage from '../../assets/img/loading.gif'
 
@@ -70,8 +70,8 @@ export default class FitTime extends Component {
 
   fetchData() {
     var self = this;
-    var url1 = 'http://www.fitnes.cn/jianshen';
-    var url2 = 'http://www.fitnes.cn/jianshen/index_2.html';
+    var url1 = 'http://www.fitsns.cn/forum/block/jszs.html?s=forum%2Fblock%2Fjszs.html&MForumPost_page=4';
+    var url2 = 'http://www.fitsns.cn/forum/block/jszs.html?s=forum%2Fblock%2Fjszs.html&MForumPost_page=5';
      Fetch.fetchData(self,url1,url2);
   }
 
@@ -96,10 +96,9 @@ export default class FitTime extends Component {
   }
 
   _pressRow(rowData) {
-    var theUrl = "http://www.fitnes.cn" + rowData.url;
     Navigation.openWeb({
       title: rowData.title,
-      url: theUrl,
+      url: rowData.url,
       imageUrl: rowData.imageUrl,
     });
   }
