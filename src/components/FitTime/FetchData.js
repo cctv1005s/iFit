@@ -1,50 +1,22 @@
   import React from 'react';
   import cheerio from 'cheerio-without-node-native';
+  import axios from 'axios';
+  var FetchDatas = {};
 
-  var fetchDatas = {};
+  var _datasource = [];
 
-  fetchDatas.fetchData= function(self,url1,url2) {
-    var _datasource = [];
-    //获取第一个网站
-    fetch(url1)
-      .then(res => { return res.blob(); })
-      .then(blobs => {
-        var reader = new FileReader();
-        reader.readAsText(blobs, 'GBK');
-
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.inner-wrap').children('a');
-          var allPhoto = $('.nodeImg').children('img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allText[i].attribs.title,
-              photo: allPhoto[i].attribs.src
-            });
-          }
-
-          //获取第二个网站
-       fetch(url2)
-      .then(res => { return res.blob(); })
-      .then(blob => {
-        var reader = new FileReader();
-        reader.readAsText(blob, 'GBK');
-        reader.onload = function (e) {
-          var $ = cheerio.load(reader.result);
-          var allText = $('.inner-wrap').children('a');
-          var allPhoto = $('.nodeImg').children('img');
-          for (var i = 0; i < allText.length; i++) {
-            _datasource.push({
-              url: allText[i].attribs.href,
-              title: allText[i].attribs.title,
-              photo: allPhoto[i].attribs.src
-            });
-          }
-
-          var realDatasource = [];
+  var getData = function(self,currentPage,totalPage){
+    if(currentPage > totalPage){
+        var realDatasource = [];
+          console.log("fittime: " + _datasource.length / 4);
           for (var i = 0, j = 0; i < _datasource.length / 4; i++ , j += 4) {
             realDatasource.push([
+               _datasource[j],
+               _datasource[j + 1],
+               _datasource[j + 2],
+               _datasource[j + 3],
+            ]);
+            fittime_gb.push([
                _datasource[j],
                _datasource[j + 1],
                _datasource[j + 2],
@@ -54,22 +26,35 @@
           console.log(realDatasource);
           self.setState({
             dataSource: self.state.dataSource.cloneWithRows(realDatasource),
-            loaded: true,
-          });
-
-          //讲数据添加进入缓存
-          self.saveData();
-        }
+            loaded:true
+          });                 
+          
+    }else{
+      var url = 'http://www.hiyd.com/zixun/?page='+currentPage;
+      axios.get(url)
+      .then(res => { return res.data;})
+      .then(data => {
+          var $ = cheerio.load(data);
+          var allText = $('.item-pic a');
+          var allPhoto = $('.item-pic a img');
+          for (var i = 0; i < 4; i++) {
+            _datasource.push({
+              url: allText[i].attribs.href,
+              title: allPhoto[i].attribs.alt,
+              photo: allPhoto[i].attribs.src
+            });
+          }    
+          currentPage += 1;
+            getData(self,currentPage,totalPage);
       })
       .catch((error) => {
         console.warn(error);
       });
-
-        };
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
+    }
   }
 
-  export default fetchDatas;
+  FetchDatas.fetchData = function(self,currentPage,totalPage) {
+    getData(self,currentPage,totalPage);
+  }
+
+  export default FetchDatas;
